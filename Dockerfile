@@ -20,6 +20,11 @@ RUN docker-php-source extract \
 ADD uploads.ini /usr/local/etc/php/conf.d/
 ADD .bashrc /root
 COPY docker-entrypoint2.sh /usr/local/bin/
+COPY secure-db-connection.1.1.4.zip /tmp
+
+RUN unzip /tmp/secure-db-connection.1.1.4.zip -d /usr/src/wordpress/wp-content/plugins
+COPY db.php /usr/src/wordpress/wp-content/db.php
+COPY wp-config.php /tmp/
 
 ENTRYPOINT ["docker-entrypoint2.sh"]
 CMD ["php-fpm"]

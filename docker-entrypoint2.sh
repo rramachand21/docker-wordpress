@@ -24,6 +24,8 @@ echo $DEFINES
 
 echo "Adding Defines to wp-config.php..."
 
+cp wp-config-sample.php wp-config.php
+
 # Remove previously-injected vars
 sed '/\/\/ENTRYPOINT_START/,/\/\/ENTRYPOINT_END/d' wp-config.php > wp-config.tmp
 
@@ -42,6 +44,7 @@ if (isset(\$_SERVER['HTTP_X_FORWARDED_PROTO']) && \$_SERVER['HTTP_X_FORWARDED_PR
 EOF
 
 rm wp-config.tmp
+cp /tmp/wp-config.php wp-config.php
 
 # Install Nginx Helper plugin
 if [ ! -e wp-content/plugins/nginx-helper ]; then

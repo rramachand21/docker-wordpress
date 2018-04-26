@@ -3,7 +3,7 @@ version: '3.1'
 services:
 
   nginx:
-    image: emcniece/nginx-cache-purge-wp:1.13-alpine
+    image: rramachand21/nginx-wp-php-fpm
     ports:
       - 8080:80
     links:
@@ -14,24 +14,15 @@ services:
   wp-fpm:
     tty: true
     stdin_open: true
-    image: emcniece/wordpress:4-php7.1-fpm-alpine
+    image: rramachand21/wp-alpine-php-fpm
     volumes:
       - wproot:/var/www/html
     environment:
-      WORDPRESS_DB_HOST: mysql
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
+      WORDPRESS_DB_HOST: $WP_DB_HOST
+      WORDPRESS_DB_USER: $WP_DB_USER
+      WORDPRESS_DB_PASSWORD: $WP_DB_PASS
       WPFPM_WP_REDIS_HOST: redis
       WPFPM_RT_WP_NGINX_HELPER_CACHE_PATH: "/tmp/cache"
-
-  mysql:
-    image: mariadb
-    command: mysqld --innodb-buffer-pool-size=20M
-    environment:
-      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
-      MYSQL_USER: wordpress
-      MYSQL_DATABASE: wordpress
-      MYSQL_PASSWORD: wordpress
 
   redis:
     image: redis:3-alpine
